@@ -16,4 +16,8 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-Route::resource('api/contacts', 'ContactsController');
+Route::get('api/contacts', 'ContactsController@index');
+Route::post('api/contacts', 'ContactsController@store');
+Route::get('api/contacts/{id}', 'ContactsController@show');
+Route::put('api/contacts/{id}', 'ContactsController@update');
+Route::delete('api/contacts/{id}', 'ContactsController@destroy');

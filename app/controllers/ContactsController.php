@@ -21,12 +21,14 @@ class ContactsController extends BaseController {
 	 */
 	public function store()
 	{
-        Contact::create([
+        $contact = Contact::create([
             'first_name' => Input::get('first_name'),
             'last_name' => Input::get('last_name'),
             'email' => Input::get('email'),
             'phone' => Input::get('phone'),
         ]);
+
+        return $contact;
 	}
 
 	/**
@@ -58,6 +60,8 @@ class ContactsController extends BaseController {
         $contact->phone = Input::get('phone');
 
         $contact->save();
+
+        return $contact;
 	}
 
 	/**
@@ -71,6 +75,8 @@ class ContactsController extends BaseController {
 	{
         $contact = Contact::find($id);
         $contact->delete();
+
+        die('DELETED');
 	}
 
 }
