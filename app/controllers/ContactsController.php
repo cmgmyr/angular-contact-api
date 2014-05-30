@@ -23,7 +23,33 @@ class ContactsController extends BaseController {
             $contacts->orWhere('phone', 'LIKE', '%'.$queryString.'%');
         }
 
-        return $contacts->get();
+        if (count($contacts) > 0) {
+            $contacts = $contacts->get();
+            $parsedContacts = [];
+            $lastInitial = '';
+
+            foreach ($contacts as $contact) {
+                $initial = strtoupper(substr($contact->$sortBy, 0, 1));
+
+                if ($lastInitial != $initial) {
+                    $lastInitial = $initial;
+
+                    $parsedContacts[$lastInitial]['title'] = $lastInitial;
+                }
+
+                $parsedContacts[$lastInitial]['contacts'][] = [
+                    'id' => (int) $contact->id,
+                    'first_name' => $contact->first_name,
+                    'last_name' => $contact->last_name,
+                    'email' => $contact->email,
+                    'phone' => $contact->phone,
+                ];
+            }
+
+            return $parsedContacts;
+        }
+
+        return null;
 	}
 
 	/**
