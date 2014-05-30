@@ -46,6 +46,10 @@ class ContactsController extends BaseController {
                 ];
             }
 
+            if ($direction == 'DESC') {
+                $parsedContacts = rsort($parsedContacts);
+            }
+
             return $parsedContacts;
         }
 
