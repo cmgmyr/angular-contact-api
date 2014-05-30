@@ -10,7 +10,20 @@ class ContactsController extends BaseController {
 	 */
 	public function index()
 	{
-		return Contact::orderBy('last_name', 'ASC')->get();
+        $sortBy = Input::get('sortBy', 'last_name');
+        $direction = Input::get('direction', 'ASC');
+
+        $contacts = Contact::orderBy($sortBy, $direction);
+
+        $queryString = Input::get('query', '');
+        if ($queryString != '') {
+            $contacts->where('first_name', 'LIKE', '%'.$queryString.'%');
+            $contacts->orWhere('last_name', 'LIKE', '%'.$queryString.'%');
+            $contacts->orWhere('email', 'LIKE', '%'.$queryString.'%');
+            $contacts->orWhere('phone', 'LIKE', '%'.$queryString.'%');
+        }
+
+        return $contacts->get();
 	}
 
 	/**
